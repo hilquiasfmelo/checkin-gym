@@ -1,0 +1,32 @@
+{
+  "name": "checkin-gym",
+  "version": "1.0.0",
+  "description": "GymPass style app.",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "tsx watch src/server.ts",
+    "start:build": "tsup src --out-dir build",
+    "start": "node build/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hilquiasfmelo/checkin-gym.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hilquiasfmelo/checkin-gym/issues"
+  },
+  "homepage": "https://github.com/hilquiasfmelo/checkin-gym#readme",
+  "devDependencies": {
+    "@rocketseat/eslint-config": "1.2.0",
+    "@types/node": "18.15.11",
+    "tsup": "6.7.0",
+    "tsx": "3.12.6",
+    "typescript": "5.0.3"
+  },
+  "dependencies": {
+    "fastify": "4.15.0"
+  }
+}
