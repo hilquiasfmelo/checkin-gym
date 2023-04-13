@@ -1,16 +1,21 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, beforeEach } from 'vitest'
 import { hash } from 'bcryptjs'
 
-import { InMemoryRepository } from '@/repositories/in-memory/in-memory-users-repository'
+import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { AuthenticateUseCase } from './authenticate'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
-describe('Autheticate Use Case', async () => {
-  it('should be able authenticate user', async () => {
-    const inMemoryRepository = new InMemoryRepository()
-    const sut = new AuthenticateUseCase(inMemoryRepository)
+let inMemoryUsersRepository: InMemoryUsersRepository
+let sut: AuthenticateUseCase
 
-    await inMemoryRepository.create({
+describe('Autheticate Use Case', async () => {
+  beforeEach(() => {
+    inMemoryUsersRepository = new InMemoryUsersRepository()
+    sut = new AuthenticateUseCase(inMemoryUsersRepository)
+  })
+
+  it('should be able authenticate user', async () => {
+    await inMemoryUsersRepository.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password_hash: await hash('12345678', 6),
@@ -25,9 +30,7 @@ describe('Autheticate Use Case', async () => {
   })
 
   it('should not be able authenticate with wrong email', async () => {
-    const inMemoryRepository = new InMemoryRepository()
-    const sut = new AuthenticateUseCase(inMemoryRepository)
-
+    // TODO: pode ser preciso adicionar o await antes do expect
     expect(async () => {
       await sut.run({
         email: 'johndoe@example.com',
@@ -37,10 +40,7 @@ describe('Autheticate Use Case', async () => {
   })
 
   it('should not be able authenticate with wrong password', async () => {
-    const inMemoryRepository = new InMemoryRepository()
-    const sut = new AuthenticateUseCase(inMemoryRepository)
-
-    await inMemoryRepository.create({
+    await inMemoryUsersRepository.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password_hash: await hash('12345678', 6),
